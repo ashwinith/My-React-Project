@@ -4,6 +4,7 @@ let router=express.Router(); /*Whenever we are creating external express file th
 let Joi=require("@hapi/joi");
 
 const model=require("../DB Schemas/contactSchema");
+
 const contacts=model.contactModel;
 
 router.post('/contactus',async(req,res)=>{
@@ -11,7 +12,7 @@ router.post('/contactus',async(req,res)=>{
     let {error}=validationError(req.body);
     if(error){return res.send(error.details[0].message)};
     let newcontacts = new contacts({
-        name: req.body.name,
+        fname: req.body.fname,
         email:req.body.email,
         message:req.body.message
     });
@@ -23,7 +24,7 @@ router.post('/contactus',async(req,res)=>{
 
 function validationError(error){
 let schema=Joi.object({
-    name:Joi.string().min(3).max(50).required(),
+    fname:Joi.string().min(3).max(50).required(),
     email:Joi.string().min(5).max(50).required().email(),
     message:Joi.string().min(2).max(100).required()
 });
