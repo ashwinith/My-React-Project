@@ -4,7 +4,8 @@ let User = require("../DB Schemas/userSchema");
 let bcrypt = require("bcrypt");
 let Joi = require("@hapi/joi");
 
-router.post("/forgotpasswordAPI/:token", async (req, res) => { // Here we are sending token in URL to match it with the generated token.
+router.post('/forgotpassword/:token', async (req, res) => { // Here we are sending token in URL to match it with the generated token.
+    console.log("Backend API");
     let user = await User.userModel.findOne({
         "resetpasswordtoken": req.params.token,
         "resetpasswordexpires": {
@@ -22,14 +23,15 @@ $gt: Date.now()
     user.resetpasswordtoken = undefined;
     let salt = await bcrypt.genSalt(10); // The basic idea for using bcrypt.genSalt is to generate Salt for password which need to encrypted.
     user.userLogin.userpassword = await bcrypt.hash(user.userLogin.userpassword, salt);
-    await user.save();
-    res.send({ message: "Password updated succesfully." });
+    let data=await user.save();
+    res.send({ message: "Password updated succesfully.",d:data });
 });
 
 function Validationerror(error) {
     let Schema = Joi.object({
         userLogin: {
-            userpassword: Joi.string().required()
+            userpassword: Joi.string().required(),
+            userEmail:Joi.string().required()
         }
     });
     return Schema.validate(error);

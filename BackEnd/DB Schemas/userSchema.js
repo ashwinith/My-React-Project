@@ -8,8 +8,9 @@ let userSchema=new mongoose.Schema({
     userLastName:{type:String,min:4,max:20,trim: true,required:true},
     userLogin:
     {
-        username:{type:String, min:6,max:20,alphanum:true,trim:true,unique:true,required:true},
+    username:{type:String, min:6,max:20,alphanum:true,trim:true,unique:true,required:true},
     userpassword:{type:String, min:6, max:12,alphanum:true,trim:true,required:true},
+    userconfirmpwd: {type:String, min:6, max:12,alphanum:true,trim:true,required:true},
     userEmail:{type:String,alphanum:true,trim:true,unique:true,required:true},
     
     },
@@ -44,6 +45,7 @@ function validationerror(error){
         userLogin:{
             username:joi.String().min(6).max(20).alphanum().required(),
             userpassword:joi.String().min(6).max(12).alphanum().required(),
+            userconfirmpwd:joi.String().min(6).max(12).alphanum().required(),
             userEmail:joi.String().required().email()
         },
         usercountry:joi.String().required(),
